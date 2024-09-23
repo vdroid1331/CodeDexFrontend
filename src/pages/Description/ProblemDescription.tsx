@@ -13,6 +13,27 @@ import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/ext-language_tools";
 import "ace-builds/src-noconflict/theme-github";
 import "ace-builds/src-noconflict/theme-github_dark";
+import "ace-builds/src-noconflict/theme-tomorrow";
+import "ace-builds/src-noconflict/theme-kuroir";
+import "ace-builds/src-noconflict/theme-twilight";
+import "ace-builds/src-noconflict/theme-xcode";
+import "ace-builds/src-noconflict/theme-textmate";
+import "ace-builds/src-noconflict/theme-solarized_dark";
+import "ace-builds/src-noconflict/theme-solarized_light";
+import "ace-builds/src-noconflict/theme-terminal";
+
+import Languages from "../../constants/Languages";
+import Themes from "../../constants/Themes";
+
+type languageSupport = {
+  languageName: string;
+  value: string;
+};
+
+type themeStyle = {
+  themeName: string;
+  value: string;
+};
 
 function Description({ descriptionText }: { descriptionText: string }) {
   const sanitizedMarkdown = DOMPurify.sanitize(descriptionText);
@@ -20,6 +41,8 @@ function Description({ descriptionText }: { descriptionText: string }) {
   const [activeTab, setActiveTab] = useState("statement");
   const [leftWidth, setLeftWidth] = useState(50);
   const [isDragging, setIsDragging] = useState(false);
+  const [language, setLanguage] = useState("javascript");
+  const [theme, setTheme] = useState("monokai");
 
   const startDragging = (e: MouseEvent) => {
     setIsDragging(true);
@@ -107,31 +130,38 @@ function Description({ descriptionText }: { descriptionText: string }) {
             <button className="btn btn-warning btn-sm">Run Code</button>
           </div>
           <div>
-            <select className="select select-info w-full select-sm max-w-xs">
-              <option disabled selected>
-                Language
-              </option>
-              <option value="">CPP</option>
-              <option value="">Java</option>
-              <option value="">JS</option>
-              <option value="">Python</option>
+            <select
+              className="select select-info w-full select-sm max-w-xs"
+              value={language}
+              onChange={(e) => setLanguage(e.target.value)}
+            >
+              {Languages.map((language: languageSupport) => (
+                <option key={language.value} value={language.value}>
+                  {" "}
+                  {language.languageName}{" "}
+                </option>
+              ))}
             </select>
           </div>
           <div>
-            <select className="select select-info w-full select-sm max-w-xs">
-              <option disabled selected>
-                Theme
-              </option>
-              <option value="">Monokai</option>
-              <option value="">Github</option>
-              <option value="">Github Dark</option>
+            <select
+              className="select select-info w-full select-sm max-w-xs"
+              value={theme}
+              onChange={(e) => setTheme(e.target.value)}
+            >
+              {Themes.map((theme: themeStyle) => (
+                <option key={theme.value} value={theme.value}>
+                  {" "}
+                  {theme.themeName}{" "}
+                </option>
+              ))}
             </select>
           </div>
         </div>
         <div className="editorContainer">
           <AceEditor
-            mode="javascript"
-            theme="monokai"
+            mode={language}
+            theme={theme}
             name="codeEditor"
             className="editor"
             style={{ width: "100%" }}
