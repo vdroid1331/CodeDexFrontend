@@ -1,5 +1,6 @@
 import "./App.css";
 
+import Navbar from "./components/Navbar";
 import ProblemDescription from "./pages/Description/ProblemDescription";
 
 function App() {
@@ -11,7 +12,10 @@ function App() {
   `;
 
   return (
-    <ProblemDescription descriptionText={markdownText}></ProblemDescription>
+    <>
+      <Navbar />
+      <ProblemDescription descriptionText={markdownText}></ProblemDescription>
+    </>
   );
 }
 
